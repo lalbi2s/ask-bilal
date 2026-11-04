@@ -1,7 +1,30 @@
 namespace AskBilal.Core;
 
+public record PairScore(string First, string Second, double Score);
+
 public static class CosineSimilarity
 {
+    /// <summary>Compares every pair of texts once and sorts them from closest to farthest.</summary>
+    public static List<PairScore> RankPairs(IReadOnlyList<string> texts, IReadOnlyList<float[]> vectors)
+    {
+        if (texts.Count != vectors.Count)
+        {
+            throw new ArgumentException("There must be one vector per text.");
+        }
+
+        var pairs = new List<PairScore>();
+        for (var i = 0; i < texts.Count; i++)
+        {
+            for (var j = i + 1; j < texts.Count; j++)
+            {
+                var score = Compute(vectors[i], vectors[j]);
+                pairs.Add(new PairScore(texts[i], texts[j], score));
+            }
+        }
+
+        return pairs.OrderByDescending(pair => pair.Score).ToList();
+    }
+
     /// <summary>Gives 1 for the same direction, 0 for unrelated vectors, -1 for opposite ones.</summary>
     public static double Compute(float[] a, float[] b)
     {
