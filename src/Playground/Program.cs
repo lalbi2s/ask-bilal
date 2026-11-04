@@ -42,13 +42,16 @@ foreach (var effort in new[] { "none", "low", "medium" })
     await AskAndPrint($"reasoning = {effort}", options);
 }
 
-// The documentation says reasoning models refuse "temperature". Check it for real.
-var withTemperature = new ChatCompletionOptions
+// The documentation says reasoning models refuse "temperature". Check it for each level.
+foreach (var effort in new[] { "none", "low", "medium" })
 {
-    ReasoningEffortLevel = new ChatReasoningEffortLevel("none"),
-    Temperature = 0.2f,
-};
-await AskAndPrint("reasoning = none, temperature = 0.2", withTemperature);
+    var options = new ChatCompletionOptions
+    {
+        ReasoningEffortLevel = new ChatReasoningEffortLevel(effort),
+        Temperature = 0.2f,
+    };
+    await AskAndPrint($"reasoning = {effort}, temperature = 0.2", options);
+}
 
 async Task AskAndPrint(string label, ChatCompletionOptions options)
 {

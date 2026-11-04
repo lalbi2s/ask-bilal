@@ -37,7 +37,7 @@ dotnet user-secrets set "AzureOpenAI:Endpoint" "https://<your-resource>.openai.a
 dotnet run --project src/Playground -- "What does a software tester do?"
 ```
 
-The app asks the question with several reasoning levels and prints the answer, the number of tokens, the time and the estimated cost for each call.
+The app asks the question with several reasoning levels, with and without a temperature, and prints the answer, the number of tokens, the time and the estimated cost for each call. With this model, a temperature is only accepted when reasoning is set to "none".
 
 ## Tests
 
