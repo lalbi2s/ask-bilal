@@ -5,10 +5,11 @@ using OpenAI;
 using Playground;
 
 var command = args.FirstOrDefault();
-if (command != "chat")
+if (command != "chat" && command != "embed")
 {
     Console.WriteLine("Usage:");
     Console.WriteLine("  dotnet run --project src/Playground -- chat [question]");
+    Console.WriteLine("  dotnet run --project src/Playground -- embed");
     return;
 }
 
@@ -20,4 +21,11 @@ var endpoint = config["AzureOpenAI:Endpoint"]
 var tokenPolicy = new BearerTokenPolicy(new DefaultAzureCredential(), "https://ai.azure.com/.default");
 var options = new OpenAIClientOptions { Endpoint = new Uri(endpoint) };
 
-await ChatDemo.Run(tokenPolicy, options, string.Join(' ', args.Skip(1)));
+if (command == "chat")
+{
+    await ChatDemo.Run(tokenPolicy, options, string.Join(' ', args.Skip(1)));
+}
+else
+{
+    await EmbeddingDemo.Run(tokenPolicy, options);
+}
