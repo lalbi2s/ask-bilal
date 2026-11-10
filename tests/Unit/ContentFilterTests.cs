@@ -9,9 +9,9 @@ public class ContentFilterTests
     [InlineData("repo/.env.local")]
     [InlineData("docs/design.md")]
     [InlineData("repo/docs/notes.md")]
-    [InlineData("CLAUDE.md")]
-    [InlineData("repo/CLAUDE.md")]
-    [InlineData("repo/.claude/settings.json")]
+    [InlineData("NOTES.md")]
+    [InlineData("repo/internal-notes.md")]
+    [InlineData("repo/.hidden/settings.json")]
     [InlineData("repo/local.settings.json")]
     public void IsExcludedPath_RefusesPrivateFiles(string path)
     {

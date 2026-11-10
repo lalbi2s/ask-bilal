@@ -4,18 +4,22 @@ namespace AskBilal.Core;
 
 public static partial class ContentFilter
 {
-    private static readonly string[] ExcludedFolders = ["docs", ".claude"];
-    private static readonly string[] ExcludedFiles = ["CLAUDE.md", "local.settings.json"];
-
-    /// <summary>True for files that must never be indexed (secrets, internal notes).</summary>
+    /// <summary>
+    /// True for files that must never be indexed: secrets, internal notes, hidden folders.
+    /// Among the Markdown files, only README.md is public content.
+    /// </summary>
     public static bool IsExcludedPath(string path)
     {
         var parts = path.Replace('\\', '/').Split('/', StringSplitOptions.RemoveEmptyEntries);
         var fileName = parts[^1];
 
+        var isOtherMarkdown = fileName.EndsWith(".md", StringComparison.OrdinalIgnoreCase)
+            && !fileName.Equals("README.md", StringComparison.OrdinalIgnoreCase);
+
         return fileName.StartsWith(".env", StringComparison.OrdinalIgnoreCase)
-            || ExcludedFiles.Contains(fileName, StringComparer.OrdinalIgnoreCase)
-            || parts[..^1].Any(folder => ExcludedFolders.Contains(folder, StringComparer.OrdinalIgnoreCase));
+            || fileName.Equals("local.settings.json", StringComparison.OrdinalIgnoreCase)
+            || isOtherMarkdown
+            || parts[..^1].Any(folder => folder.StartsWith('.') || folder.Equals("docs", StringComparison.OrdinalIgnoreCase));
     }
 
     /// <summary>Safety net before sending text to the index: a phone number or a secret by mistake.</summary>

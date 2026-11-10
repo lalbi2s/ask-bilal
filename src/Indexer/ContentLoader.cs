@@ -22,12 +22,14 @@ public static class ContentLoader
         {
             foreach (var path in Directory.GetFiles(readmeFolder, "*.md").Order())
             {
-                if (ContentFilter.IsExcludedPath(Path.GetRelativePath(contentFolder, path)))
+                var repo = Path.GetFileNameWithoutExtension(path);
+
+                // The file is saved as <repo>.md, but it comes from <repo>/README.md.
+                if (ContentFilter.IsExcludedPath($"{repo}/README.md"))
                 {
                     continue;
                 }
 
-                var repo = Path.GetFileNameWithoutExtension(path);
                 documents.Add(new SourceDocument(
                     Id: $"readme-{repo}",
                     Title: $"{repo} README",
