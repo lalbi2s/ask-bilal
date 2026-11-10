@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Core/Core.csproj" />
+    <Project Path="src/Indexer/Indexer.csproj" />
     <Project Path="src/Playground/Playground.csproj" />
   </Folder>
   <Folder Name="/tests/">
