@@ -481,3 +481,5 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 local.settings.json
+# Content copied from the site and GitHub, rebuilt on demand
+/content/

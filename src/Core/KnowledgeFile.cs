@@ -1,0 +1,27 @@
+using System.Text.Json;
+
+namespace AskBilal.Core;
+
+public static class KnowledgeFile
+{
+    /// <summary>Reads the /ai/knowledge.json file produced by the site at build time.</summary>
+    public static List<SourceDocument> Parse(string json)
+    {
+        using var document = JsonDocument.Parse(json);
+        if (document.RootElement.ValueKind != JsonValueKind.Array)
+        {
+            throw new InvalidOperationException("knowledge.json must contain a list of items.");
+        }
+
+        return document.RootElement.EnumerateArray()
+            .Select(item => new SourceDocument(
+                Id: item.GetProperty("id").GetString()!,
+                Title: item.GetProperty("title").GetString()!,
+                Project: item.GetProperty("project").GetString() ?? "",
+                Url: item.GetProperty("url").GetString()!,
+                Lang: item.GetProperty("lang").GetString()!,
+                Type: item.GetProperty("type").GetString()!,
+                Text: item.GetProperty("text").GetString()!))
+            .ToList();
+    }
+}
