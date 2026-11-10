@@ -4,6 +4,11 @@ public class AskService(IEmbedder embedder, IChunkSearch search, IChat chat, str
 {
     public const int SourceCount = 5;
 
+    // Score of the semantic ranker (0 to 4). On my 14 test questions, the off-topic ones scored at most 1.68
+    // and the valid ones at least 2.02. Questions that are about Bilal but not answered by the sources
+    // (salary, age) score about 1.9: the model refuses them, thanks to the rules of the prompt.
+    public const double DefaultMinimumScore = 1.8;
+
     private const string ContactEmail = "contact@bilalsaidi.dev";
 
     /// <summary>Finds the best pieces of content, then asks the model to answer with them only.</summary>
