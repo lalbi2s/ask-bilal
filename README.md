@@ -65,7 +65,7 @@ Compare the order of the pairs rather than the exact values, and never compare v
 
 The indexer reads two kinds of content from a `content/` folder (ignored by Git):
 
-- `content/knowledge.json`: the public texts of the site, generated at build time at `/ai/knowledge.json`. Copy that file from the site build.
+- `content/knowledge.json`: the public texts of the site, produced at build time at `/ai/knowledge.json`. Copy that file from the site build.
 - `content/readmes/*.md`: the README of each public repository, downloaded by the indexer.
 
 ```bash
